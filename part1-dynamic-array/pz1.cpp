@@ -8,14 +8,14 @@ private:
     int size;   // Размер массива
 
 public:
-    // === ЗАДАНИЕ 1 ===
+    // Задание 1
     
     // Конструктор, получающий на вход размер массива
     DynamicArray(int size) : size(size) {
         if (size < 0) {
             throw std::invalid_argument("Размер массива не может быть отрицательным.");
         }
-        data = new int[size](); // Инициализируем нулями
+        data = new int[size]();
     }
 
     // Деструктор
@@ -51,7 +51,7 @@ public:
         std::cout << "]\n";
     }
 
-    // === ЗАДАНИЕ 2 ===
+    // Задание 2
     
     // Конструктор копирования
     DynamicArray(const DynamicArray& other) : size(other.size) {
@@ -61,7 +61,7 @@ public:
         }
     }
 
-    // === ЗАДАНИЕ 3 ===
+    // Здание 3
     
     // Добавление значения в конец с расширением размера
     void append(int value) {
@@ -80,13 +80,12 @@ public:
         size++;
     }
 
-    // === ЗАДАНИЕ 4 ===
+    // Задание 4
     
     // Сложение массивов (элемент за элементом)
     void add(const DynamicArray& other) {
-        // Размер исходного массива не изменяется, проходим только по его размеру
         for (int i = 0; i < size; ++i) {
-            int otherVal = (i < other.size) ? other.data[i] : 0; // Недостающие = 0
+            int otherVal = (i < other.size) ? other.data[i] : 0;
             data[i] += otherVal;
         }
     }
@@ -94,12 +93,11 @@ public:
     // Вычитание массивов (элемент за элементом)
     void sub(const DynamicArray& other) {
         for (int i = 0; i < size; ++i) {
-            int otherVal = (i < other.size) ? other.data[i] : 0; // Недостающие = 0
+            int otherVal = (i < other.size) ? other.data[i] : 0;
             data[i] -= otherVal;
         }
     }
-
-    // Вспомогательный метод для получения размера (удобно для демонстрации)
+    
     int getSize() const {
         return size;
     }
@@ -110,7 +108,7 @@ public:
 
 int main() {
     try {
-        std::cout << "--- Задание 1: Базовые операции ---\n";
+        std::cout << "--- Задание 1 ---\n";
         DynamicArray arr1(5);
         arr1.set(0, 10);
         arr1.set(1, -50);
@@ -129,7 +127,7 @@ int main() {
         try { arr1.get(-1); } catch (const std::exception& e) { std::cout << "  " << e.what() << "\n"; }
 
 
-        std::cout << "\n--- Задание 2: Конструктор копирования ---\n";
+        std::cout << "\n--- Задание 2 ---\n";
         DynamicArray arr2 = arr1; // Вызов конструктора копирования
         std::cout << "arr2 (копия arr1): ";
         arr2.print();
@@ -141,7 +139,7 @@ int main() {
         arr1.print();
 
 
-        std::cout << "\n--- Задание 3: Добавление в конец (append) ---\n";
+        std::cout << "\n--- Задание 3 ---\n";
         arr1.append(42);
         std::cout << "arr1 после добавления 42: ";
         arr1.print();
@@ -149,7 +147,7 @@ int main() {
         try { arr1.append(101); } catch (const std::exception& e) { std::cout << "  " << e.what() << "\n"; }
 
 
-        std::cout << "\n--- Задание 4: Сложение и вычитание ---\n";
+        std::cout << "\n--- Задание 4 ---\n";
         DynamicArray arrA(3);
         arrA.set(0, 10); arrA.set(1, 20); arrA.set(2, 30);
 
