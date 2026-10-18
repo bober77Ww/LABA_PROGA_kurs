@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
 
-    cout << "--- Task 1 ---\n";
+    cout << "--- Задание 1 ---\n";
     DynamicArray arr1(5);
     arr1.set(0, 10);        
     arr1.set(1, -50);
@@ -13,28 +13,28 @@ int main() {
     arr1.set(4, 0);
     cout << "arr1: ";
     arr1.print();
-    cout << "Element witn index 2: " << arr1.get(2) << "\n";
+    cout << "Элемент c индексом 2: " << arr1.get(2) << "\n";
 
     arr1.set(7, 5);
     arr1.set(0, 500);
-    cout << "After errors arr1 intact: ";
+    cout << "После ошибок arr1 цел: ";
     arr1.print();
     cout << "\n";
 
 
-    cout << "--- Task 2: ---\n";
+    cout << "--- Задание 2 ---\n";
     DynamicArray arr2 = arr1;
-    cout << "arr2 (copy): ";
+    cout << "arr2 копия: ";
     arr2.print();
     arr2.set(0, 99);
-    cout << "arr2 after ..: ";
+    cout << "arr2 после изменений: ";
     arr2.print();
     cout << "arr1 не изменился:   ";
     arr1.print();
     cout << "\n";
 
 
-    cout << "--- Task 3 ---\n";
+    cout << "--- Задание 3 ---\n";
     cout << "Размер arr1 был:  " << arr1.getSize() << "\n";
     arr1.append(42);
     cout << "Размер arr1 стал: " << arr1.getSize() << "\n";
@@ -44,7 +44,7 @@ int main() {
     cout << "\n";
 
 
-    cout << "--- Task 4 ---\n";
+    cout << "--- Задание 4 ---\n";
     DynamicArray arrA(3);
     arrA.set(0, 10);
     arrA.set(1, 20);

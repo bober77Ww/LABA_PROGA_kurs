@@ -11,7 +11,7 @@ public:
 
     DynamicArray(int newSize) {
         if (newSize <= 0) {
-            cout << "\n";
+            cout << "Ошибка: размер <= нулю\n";
             size = 1;
         } else {
             size = newSize;
@@ -25,11 +25,11 @@ public:
 
     void set(int index, int value) {
         if (index < 0 || index >= size) {
-            cout << "dopisat" << index << "dopisat\n";
+            cout << "Ошибка set: индекс " << index << " вышел за границы\n";
             return;
         }
         if (value < -100 || value > 100) {
-            cout << "dopisat" << value << "dopisat\n";
+            cout << "Ошибка set: число " << value << " не входит в [-100, 100]\n";
             return;
         }
         data[index] = value;
@@ -37,7 +37,7 @@ public:
 
     int get(int index) const {
         if (index < 0 || index >= size) {
-            cout << "dopisat" << index << "\n";
+            cout << "Ошибка get: индекс " << index << " вышел за границы\n";
             return 0;
         }
         return data[index];
@@ -61,7 +61,7 @@ public:
 
     void append(int value) {
         if (value < -100 || value > 100) {
-            cout << "dopisat" << value << "\n";
+            cout << "Ошибка append: число " << value << " не входит в [-100,100]\n";
             return;
         }
         int* newData = new int[size + 1];
