@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
 class DynamicArray {
@@ -11,11 +12,9 @@ public:
 
     DynamicArray(int newSize) {
         if (newSize <= 0) {
-            cout << "Ошибка: размер <= нулю\n";
-            size = 1;
-        } else {
-            size = newSize;
+           throw invalid_argument("Размер массива должен быть больше нуля");
         }
+        size = newSize;
         data = new int[size]();
     }
 
@@ -25,20 +24,17 @@ public:
 
     void set(int index, int value) {
         if (index < 0 || index >= size) {
-            cout << "Ошибка set: индекс " << index << " вышел за границы\n";
-            return;
+            throw out_of_range("Ошибка set: индекс вне границ");
         }
         if (value < -100 || value > 100) {
-            cout << "Ошибка set: число " << value << " не входит в [-100, 100]\n";
-            return;
+            throw invalid_argument("Ошибка set: значение не в диапозоне [-100, 100]");
         }
         data[index] = value;
     }
 
     int get(int index) const {
         if (index < 0 || index >= size) {
-            cout << "Ошибка get: индекс " << index << " вышел за границы\n";
-            return 0;
+            throw out_of_range("Ошибка get: индекс вне границ");
         }
         return data[index];
     }
@@ -61,8 +57,7 @@ public:
 
     void append(int value) {
         if (value < -100 || value > 100) {
-            cout << "Ошибка append: число " << value << " не входит в [-100,100]\n";
-            return;
+            throw invalid_argument("Ошибка append: значение не в диапозоне [-100, 100]");
         }
         int* newData = new int[size + 1];
         for (int i = 0; i < size; i++) {
