@@ -1,5 +1,5 @@
 #include <iostream>
-#include "part1.h"
+#include "DynamicArray.h"
 using namespace std;
 
 int main() {
