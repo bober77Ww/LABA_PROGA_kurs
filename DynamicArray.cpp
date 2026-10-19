@@ -1,53 +1,66 @@
 #include <iostream>
+#include <string>
 #include "DynamicArray.h"
 using namespace std;
 
 int main() {
+    cout << "ЧАСТЬ 3: ШАБЛОНЫ\n";
 
-    cout << "ЧАСТЬ 2: ПРОВЕРКА ИСКЛЮЧЕНИЙ\n";
-    
-    cout << "--- Проверка invalid_arguments ---\n";
-    DynamicArray arr(3);
-    try{
-        cout << "Пытаемся записать число > 100\n";
-        arr.set(0, 500);
-        cout << "Это сообщение не напечатается\n";
-    }
-    catch (invalid_argument& e) {
-        cout << "Ошибка: " << e.what() << "\n";
-    }
-    cout << "\n";
-
-
-    cout << "--- Проверка out_of_range ---\n";
-    try{
-        cout << "Пытаемся прочитать элемент c индексом 10\n";
-        int value = arr.get(90);
-        cout << "Значение: " << value << "\n";
-    }
-    catch (out_of_range& e) {
-        cout << "Ошибка: " << e.what() << "\n";
+    cout << "--- Числовой массив (int) ---\n";
+    DynamicArray<int> intArr(3);
+    intArr.set(0, 10);
+    intArr.set(1, 50);
+    intArr.set(2, -100);
+    cout << "intArr: " << intArr << "\n";
+    try {
+        cout << "Пытаемся записать 150 (должна быть ошибка)\n";
+        intArr.set(0, 150); 
+    } catch (const invalid_argument& e) {
+        cout << "Ошибка" << e.what() << "\n";
     }
     cout << "\n";
 
 
-    cout << "--- Проверка bad_alloc ---\n";
-    try{
-        cout << "Пытаемся создать массив на 2000000000 элементов\n";
-        DynamicArray hugeArray(2000000000);
-        cout << "Y вас мощный комп\n";
-    }
-    catch (bad_alloc& e) {
-        cout << "Ошибка: He удалось выделить память (bad_alloc)\n";
+    cout << "--- Нечисловой массив (string) ---\n";
+    DynamicArray<string> strArr(2);
+    strArr.set(0, "hello");
+    strArr.set(1, "world");
+    cout << "strArr: " << strArr << "\n";
+    cout << "\n";
+
+
+    cout << "--- Расстояние между числовыми массивами ---\n";
+    DynamicArray<int> arrA(3);
+    arrA.set(0, 0); arrA.set(1, 0); arrA.set(2, 0);
+    DynamicArray<int> arrB(3);
+    arrB.set(0, 3); arrB.set(1, 4); arrB.set(2, 0);   
+    cout << "arrA: " << arrA << "\n";
+    cout << "arrB: " << arrB << "\n";
+    cout << "Расстояние (должно быть 5): " << arrA.dist(arrB) << "\n";
+    cout << "\n";
+
+
+    cout << "--- Ошибка dist при разных размерах ---\n";
+    DynamicArray<int> arrC(2);
+    try {
+        arrA.dist(arrC);
+    } catch (const invalid_argument& e) {
+        cout << "Ошибка " << e.what() << "\n";
     }
     cout << "\n";
 
-    
-    cout << "Программа продолжает работать: \n";
-    arr.set(0,42);
-    cout << "Успешно записали 42 в arr[0]\n";
-    cout << "Массив: ";
-    arr.print();
+
+    cout << "--- Ошибка dist для нечислового типа (string) ---\n";
+    DynamicArray<string> strArr2(2);
+    strArr2.set(0, "a"); 
+    strArr2.set(1, "b");
+    try {
+        strArr.dist(strArr2); // Должно выбросить bad_typeid
+    } catch (const bad_typeid& e) {
+        cout << "Ошибка std::bad_typeid: нельзя считать расстояние между строками\n";
+    } catch (const exception& e) {
+        cout << "Ошибка (другое исключение): " << e.what() << "\n";
+    }
 
     return 0;
 }
