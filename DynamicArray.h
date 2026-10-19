@@ -95,15 +95,16 @@ public:
         if (size != other.size) {
             throw invalid_argument("Ошибка dist: размеры массивов не совпадают.");
         }
-        if constexpr (!is_arithmetic_v<T>) {
+        if constexpr (is_arithmetic_v<T>) {
+            double sum = 0.0;
+            for (int i = 0; i < size; i++) {
+                double diff = static_cast<double>(data[i]) - static_cast<double>(other.data[i]);
+                sum += diff * diff;
+            }
+            return sqrt(sum);
+        } else {
             throw bad_typeid();
         }
-        double sum = 0.0;
-        for (int i = 0; i < size; i++) {
-            double diff = static_cast<double>(data[i]) - static_cast<double>(other.data[i]);
-            sum += diff * diff;
-        }
-        return sqrt(sum);
     }
 
     int getSize() const {
