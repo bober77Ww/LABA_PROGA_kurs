@@ -4,63 +4,72 @@
 using namespace std;
 
 int main() {
-    cout << "ЧАСТЬ 3: ШАБЛОНЫ\n";
+    cout << "ЧАСТЬ 4: ОПЕРАТОРЫ\n";
 
-    cout << "--- Числовой массив (int) ---\n";
-    DynamicArray<int> intArr(3);
-    intArr.set(0, 10);
-    intArr.set(1, 50);
-    intArr.set(2, -100);
-    cout << "intArr: " << intArr << "\n";
+    cout << "--- Оператор [] ---\n";
+    DynamicArray<int> arr(3);
+    arr[0] = 10;
+    arr[1] = 20;
+    arr[2] = 30;
+    cout << "   arr: " << arr << "\n";
+    cout << "   arr[1] равно: " << arr[1] << "\n";
     try {
-        cout << "Пытаемся записать 150 (должна быть ошибка)\n";
-        intArr.set(0, 150); 
+        cout << "Пытаемся записать arr[0] = 150 (должна быть ошибка)\n";
+        arr[0] = 150; 
     } catch (const invalid_argument& e) {
-        cout << "Ошибка" << e.what() << "\n";
+        cout << "Поймано " << e.what() << "\n";
     }
     cout << "\n";
 
 
-    cout << "--- Нечисловой массив (string) ---\n";
-    DynamicArray<string> strArr(2);
-    strArr.set(0, "hello");
-    strArr.set(1, "world");
-    cout << "strArr: " << strArr << "\n";
+    cout << "--- Операторы == и != ---\n";
+    DynamicArray<int> arr2(3);
+    arr2[0] = 10;
+    arr2[1] = 20;
+    arr2[2] = 30;
+    DynamicArray<int> arr3(3);
+    arr3[0] = 10;
+    arr3[1] = 20;
+    arr3[2] = 99;
+    cout << "   arr == arr2: " << (arr == arr2) << "\n"; // true
+    cout << "   arr != arr3: " << (arr != arr3) << "\n"; // true
     cout << "\n";
 
 
-    cout << "--- Расстояние между числовыми массивами ---\n";
-    DynamicArray<int> arrA(3);
-    arrA.set(0, 0); arrA.set(1, 0); arrA.set(2, 0);
-    DynamicArray<int> arrB(3);
-    arrB.set(0, 3); arrB.set(1, 4); arrB.set(2, 0);   
-    cout << "arrA: " << arrA << "\n";
-    cout << "arrB: " << arrB << "\n";
-    cout << "Расстояние (должно быть 5): " << arrA.dist(arrB) << "\n";
+    cout << "--- Операторы += и -= ---\n";
+    DynamicArray<int> a(3);
+    a[0] = 10;
+    a[1] = 20;
+    a[2] = 30;
+    DynamicArray<int> b(3);
+    b[0] = 5;
+    b[1] = 5;
+    b[2] = 5;
+    
+    a += b;
+    cout << "   a += b" << a << "\n";
+    a -= b;
+    cout << "   a -= b" << a << "\n";
     cout << "\n";
 
 
-    cout << "--- Ошибка dist при разных размерах ---\n";
-    DynamicArray<int> arrC(2);
-    try {
-        arrA.dist(arrC);
-    } catch (const invalid_argument& e) {
-        cout << "Ошибка " << e.what() << "\n";
+    cout << "--- Итераторы (цикл for) ---\n";
+    DynamicArray<int> nums(4);
+    nums[0] = 1;
+    nums[1] = 2; 
+    nums[2] = 3; 
+    nums[3] = 4;
+    cout << "Чтение (const auto&):  ";
+    for (const auto& x : nums) {
+        cout << x << " ";
     }
     cout << "\n";
-
-
-    cout << "--- Ошибка dist для нечислового типа (string) ---\n";
-    DynamicArray<string> strArr2(2);
-    strArr2.set(0, "a"); 
-    strArr2.set(1, "b");
-    try {
-        strArr.dist(strArr2); // Должно выбросить bad_typeid
-    } catch (const bad_typeid& e) {
-        cout << "Ошибка std::bad_typeid: нельзя считать расстояние между строками\n";
-    } catch (const exception& e) {
-        cout << "Ошибка (другое исключение): " << e.what() << "\n";
+    cout << "Изменение (auto&): прибавим 100 \n";
+    for (auto& x : nums) {
+        x = x + 100;
     }
+    cout << "Результат: " << nums << "\n";
+
 
     return 0;
 }

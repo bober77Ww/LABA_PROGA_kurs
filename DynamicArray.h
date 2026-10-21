@@ -32,7 +32,7 @@ public:
         }
         if constexpr (is_integral_v<T>) {
             if (value < -100 || value > 100) {
-                throw invalid_argument("Ошибка set: целое число не в диапозоне [-100, 100]");
+                throw invalid_argument("Ошибка set: целое число вне диапозона [-100, 100]");
             }
         }
         data[index] = value;
@@ -64,7 +64,7 @@ public:
     void append(const T& value) {
         if constexpr (is_integral_v<T>) {
             if (value < -100 || value > 100) {
-                throw invalid_argument("Ошибка append: значение не в диапозоне [-100, 100]");
+                throw invalid_argument("Ошибка append: значение вне диапозона [-100, 100]");
             }
         }
         T* newData = new T[size + 1];
@@ -109,6 +109,139 @@ public:
 
     int getSize() const {
         return size;
+    }
+
+
+    class Proxy {
+    private:
+        DynamicArray& arr;
+        int index;
+    public:
+        Proxy(DynamicArray& a, int i) : arr(a), index(i) {
+        }
+
+
+        operator T() const {
+            return arr.get(index);
+        }
+
+
+        void operator=(const T& value) {
+            arr.set(index, value);
+        }
+    };
+
+
+    Proxy operator[](int index) {
+        if (index < 0 || index >= size) {
+            throw out_of_range("Ошибка []: индекс все границ");
+        }
+        return Proxy(*this, index);
+    }
+
+
+    T operator[](int index) const {
+        return get(index);
+    }
+
+
+    bool operator==(const DynamicArray& other) const {
+        if (size != other.size) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (data[i] != other.data[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    bool operator!=(const DynamicArray& other) const {
+        if (*this == other) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    DynamicArray& operator+=(const DynamicArray& other) {
+        for (int i = 0; i < size; i++) {
+            T otherValue;
+            if (i < other.size) {
+                otherValue = other.data[i];
+            } else {
+                otherValue = T();
+            }
+
+            T new_val = data[i] + otherValue;
+            if constexpr (is_integral_v<T>) {
+                if (new_val < -100 || new_val > 100) {
+                    throw invalid_argument("Ошибка +=: результат вне диапозона [-100, 100]");
+                }
+            }
+            data[i] = new_val;
+        }
+        return *this;
+    }
+
+
+    DynamicArray& operator-=(const DynamicArray& other) {
+        for (int i = 0; i < size; i++) {
+            T otherValue;
+            if (i < other.size) {
+                otherValue = other.data[i];
+            } else {
+                otherValue = T();
+            }
+
+            T new_val = data[i] - otherValue;
+            if constexpr (is_integral_v<T>) {
+                if (new_val < -100 || new_val > 100) {
+                    throw invalid_argument("Ошибка -=: результат вне диапозона [-100, 100]");
+                }
+            }
+            data[i] = new_val;
+        }
+        return *this;
+    }
+
+
+    DynamicArray& operator+=(const T& scalar) {
+        for  (int i = 0; i < size; i++) {
+            T new_val = data[i] + scalar;
+            if constexpr (is_integral_v<T>) {
+                if (new_val < - 100 || new_val > 100) {
+                    throw invalid_argument("Ошибка -= scalar: результат вне диапозона [-100, 100]");
+                }
+            }
+            data[i] = new_val;
+        }
+        return *this;
+        
+    }
+
+
+    T* begin() {
+        return data;
+    }
+
+
+    const T* begin() const {
+        return data;
+    }
+
+
+    T* end() {
+        return data + size;
+    }
+
+
+    const T* end() const {
+        return data + size;
     }
 };
 
