@@ -134,7 +134,7 @@ public:
 
     Proxy operator[](int index) {
         if (index < 0 || index >= size) {
-            throw out_of_range("Ошибка []: индекс все границ")
+            throw out_of_range("Ошибка []: индекс все границ");
         }
         return Proxy(*this, index);
     }
@@ -180,7 +180,7 @@ public:
             T new_val = data[i] + otherValue;
             if constexpr (is_integral_v<T>) {
                 if (new_val < -100 || new_val > 100) {
-                    throw invalid_argument("Ошибка +=: результат вне диапозона [-100, 100]")
+                    throw invalid_argument("Ошибка +=: результат вне диапозона [-100, 100]");
                 }
             }
             data[i] = new_val;
@@ -201,7 +201,7 @@ public:
             T new_val = data[i] - otherValue;
             if constexpr (is_integral_v<T>) {
                 if (new_val < -100 || new_val > 100) {
-                    throw invalid_argument("Ошибка -=: результат вне диапозона [-100, 100]")
+                    throw invalid_argument("Ошибка -=: результат вне диапозона [-100, 100]");
                 }
             }
             data[i] = new_val;
