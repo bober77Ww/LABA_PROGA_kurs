@@ -1,75 +1,60 @@
 #include <iostream>
 #include <string>
+#include <utility>
 #include "DynamicArray.h"
 using namespace std;
 
+void processArray(DynamicArray<int> arr) {
+    cout << "   Внутри функции. Размер переданного массива: " << arr.getSize() << "\n";
+}
+
 int main() {
-    cout << "ЧАСТЬ 4: ОПЕРАТОРЫ\n";
+    cout << "ЧАСТЬ 5: ПРАВИЛО ТРЁХ/ПЯТИ\n\n";
 
-    cout << "--- Оператор [] ---\n";
-    DynamicArray<int> arr(3);
-    arr[0] = 10;
-    arr[1] = 20;
-    arr[2] = 30;
-    cout << "   arr: " << arr << "\n";
-    cout << "   arr[1] равно: " << arr[1] << "\n";
-    try {
-        cout << "Пытаемся записать arr[0] = 150 (должна быть ошибка)\n";
-        arr[0] = 150; 
-    } catch (const invalid_argument& e) {
-        cout << "Поймано " << e.what() << "\n";
-    }
-    cout << "\n";
+    DynamicArray<int> original(3);
+    original[0] = 10;
+    original[1] = 20;
+    original[2] = 30;
+
+    cout << "--- 1. Исходный массив ---" << original << "\n\n";
 
 
-    cout << "--- Операторы == и != ---\n";
-    DynamicArray<int> arr2(3);
-    arr2[0] = 10;
-    arr2[1] = 20;
-    arr2[2] = 30;
-    DynamicArray<int> arr3(3);
-    arr3[0] = 10;
-    arr3[1] = 20;
-    arr3[2] = 99;
-    cout << "   arr == arr2: " << (arr == arr2) << "\n"; // true
-    cout << "   arr != arr3: " << (arr != arr3) << "\n"; // true
-    cout << "\n";
+    cout << "--- 2. Передача по значению (Копирование) ---\n";
+    cout << "   Вызываем processArray(original)...\n";
+    processArray(original);
+    cout << "   После вызова original цел: " << original << "\n\n";
 
 
-    cout << "--- Операторы += и -= ---\n";
-    DynamicArray<int> a(3);
-    a[0] = 10;
-    a[1] = 20;
-    a[2] = 30;
-    DynamicArray<int> b(3);
-    b[0] = 5;
-    b[1] = 5;
-    b[2] = 5;
+    cout << "--- 3. Передача c перемещением (std::move) ---\n";
+    cout << "   Вызываем processArray(std::move(original))...\n";
+    processArray(std::move(original));
+    cout << "   После вызова original 'опустошен'. Размер: " << original.getSize() << "\n\n";
+
+
+    cout << "--- 4. Move-присваивание ---\n";
+    DynamicArray<int> arrA(2);
+    arrA[0] = 1;
+    arrA[1] = 2;
     
-    a += b;
-    cout << "   a += b" << a << "\n";
-    a -= b;
-    cout << "   a -= b" << a << "\n";
-    cout << "\n";
+    DynamicArray<int> arrB(4);
+    arrB[0] = 9;
+    arrB[1] = 9;
+    arrB[2] = 9;
+    arrB[3] = 9;
+
+    cout << "   До: arrA = " << arrA << ", arrB = " << arrB << "\n";
+    arrB = std::move(arrA);
+    cout << "   После arrB = std::move(arrA):\n";
+    cout << "   arrB (забрал ресурсы): " << arrB << "\n";
+    cout << "   arrA (опустошен): размер = " << arrA.getSize() << "\n\n";
 
 
-    cout << "--- Итераторы (цикл for) ---\n";
-    DynamicArray<int> nums(4);
-    nums[0] = 1;
-    nums[1] = 2; 
-    nums[2] = 3; 
-    nums[3] = 4;
-    cout << "Чтение (const auto&):  ";
-    for (const auto& x : nums) {
-        cout << x << " ";
-    }
-    cout << "\n";
-    cout << "Изменение (auto&): прибавим 100 \n";
-    for (auto& x : nums) {
-        x = x + 100;
-    }
-    cout << "Результат: " << nums << "\n";
-
+    cout << "--- 5. Защита от самоприсваивания ---\n";
+    DynamicArray<int> selfArr(2);
+    selfArr[0] = 5;
+    selfArr[1] = 5;
+    selfArr = selfArr; 
+    cout << "   После selfArr = selfArr: " << selfArr << " (всё безопасно)\n";
 
     return 0;
 }

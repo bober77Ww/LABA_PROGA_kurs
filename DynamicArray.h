@@ -3,9 +3,10 @@
 #include <stdexcept>
 #include <type_traits>
 #include <cmath>
+#include <utility>
 using namespace std;
 
-
+// дописать
 template <typename T>
 class DynamicArray {
 private:
@@ -24,6 +25,44 @@ public:
 
     ~DynamicArray() {
         delete[] data;
+    }
+    //конструктор копирования
+    DynamicArray(const DynamicArray& other) {
+        size = other.size;
+        data = new T[size];
+        for (int i = 0; i < size; i++) {
+            data[i] = other.data[i];
+        }
+    }
+    //оператор присваивания копированием
+    DynamicArray& operator=(const DynamicArray& other) {
+        if (this != &other) {
+            delete[] data;
+            size = other.size;
+            data = new T[size];
+            for (int i = 0; i < size; i++) {
+                data[i] = other.data[i];
+            }
+        }
+        return *this;
+    }
+    //move-конструктор
+    DynamicArray(DynamicArray&& other) noexcept {
+        data = other.data;
+        size = other.size;
+        other.data = nullptr;
+        other.size = 0;
+    }
+    //move-оператор присваивания
+    DynamicArray& operator=(DynamicArray&& other) noexcept {
+        if (this != &other) {
+            delete[] data;
+            data = other.data;
+            size = other.size;
+            other.data = nullptr;
+            other.size = 0;
+        }
+        return *this;
     }
 
     void set(int index, const T& value) {
@@ -51,14 +90,6 @@ public:
             cout << data[i] << " ";
         }
         cout << "]\n";
-    }
-
-    DynamicArray(const DynamicArray& other) {
-        size = other.size;
-        data = new T[size];
-        for (int i = 0; i < size; i++) {
-            data[i] = other.data[i];
-        }
     }
 
     void append(const T& value) {
